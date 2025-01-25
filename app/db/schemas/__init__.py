@@ -1,3 +1,3 @@
-from .products import Product
+from .products import Product, ProductInDB, ProductResponse
 
-__all__ = [Product]
+__all__ = [Product, ProductInDB, ProductResponse]
