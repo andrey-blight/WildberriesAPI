@@ -4,8 +4,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.schemas import Product, ProductInDB, ProductResponse
 from app.db.models import create_product
-from app.core import settings
 from app.db.session import get_db
+from app.core import settings, scheduler
+from app.core.scheduler import send_http_request
 
 router = APIRouter()
 
@@ -40,6 +41,18 @@ async def parse_product(product: Product, db: AsyncSession = Depends(get_db)):
     return await create_product(db, product)
 
 
-@router.get("/subscribe/{artikul}")
+@router.get("/subscribe/{artikul}", status_code=200)
 async def subscribe(artikul: int):
-    pass
+    task_id = str(artikul)
+
+    if not scheduler.get_job(task_id):
+        scheduler.add_job(
+            send_http_request,
+            'interval',
+            minutes=10,
+            id=task_id,
+            args=[artikul],
+            replace_existing=True
+        )
+
+    return f"Created task {task_id}"
