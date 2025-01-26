@@ -7,21 +7,25 @@ from app.db.models import create_product
 from app.db.session import get_db
 from app.core import settings, scheduler
 from app.core.scheduler import send_http_request
+from app.core.dependencies import check_token
 
-router = APIRouter()
+router = APIRouter(dependencies=[Depends(check_token)])
 
 
 def _extract_product_fields(product_json: dict) -> dict:
-    product = product_json["data"]["products"][0]
+    try:
+        product = product_json["data"]["products"][0]
 
-    resp_json = {
-        "artikul": product["id"],
-        "name": product["name"],
-        "price": product["salePriceU"] / 100,
-        "rating": product["reviewRating"],
-        "count": product["totalQuantity"]
-    }
-    return resp_json
+        resp_json = {
+            "artikul": product["id"],
+            "name": product["name"],
+            "price": product["salePriceU"] / 100,
+            "rating": product["reviewRating"],
+            "count": product["totalQuantity"]
+        }
+        return resp_json
+    except IndexError:
+        raise HTTPException(status_code=404)
 
 
 @router.post("/products", status_code=201, response_model=ProductResponse)
