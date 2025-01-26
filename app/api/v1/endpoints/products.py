@@ -1,4 +1,5 @@
 import httpx
+
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -9,7 +10,8 @@ from app.core import settings, scheduler
 from app.core.scheduler import send_http_request
 from app.core.dependencies import check_token
 
-router = APIRouter(dependencies=[Depends(check_token)])
+# router = APIRouter(dependencies=[Depends(check_token)])
+router = APIRouter()
 
 
 def _extract_product_fields(product_json: dict) -> dict:
@@ -53,7 +55,7 @@ async def subscribe(artikul: int):
         scheduler.add_job(
             send_http_request,
             'interval',
-            minutes=10,
+            seconds=10,
             id=task_id,
             args=[artikul],
             replace_existing=True

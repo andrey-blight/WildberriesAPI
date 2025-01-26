@@ -10,6 +10,10 @@ def send_http_request(artikul: int):
     try:
         response = requests.post(settings.PARSER_URL, json={"artikul": artikul})
 
+        product_json = response.json()
+
+
+
         if response.status_code != 200:
             raise requests.RequestException
     except requests.RequestException:

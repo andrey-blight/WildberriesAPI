@@ -11,3 +11,5 @@ requests~=2.32.2
 python-dotenv~=1.0.1
 PyJWT~=2.10.1
 python-multipart~=0.0.20
+aiogram~=3.17.0
+websockets~=14.2
