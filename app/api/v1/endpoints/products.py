@@ -55,7 +55,7 @@ async def subscribe(artikul: int):
         scheduler.add_job(
             send_http_request,
             'interval',
-            seconds=10,
+            minutes=10,
             id=task_id,
             args=[artikul],
             replace_existing=True
