@@ -1,3 +1,4 @@
+import asyncio
 from contextlib import asynccontextmanager
 
 import httpx
@@ -76,7 +77,7 @@ async def websocket_endpoint(websocket: WebSocket):
                     "name": data["name"],
                     "price": data["price"],
                     "rating": data["rating"],
-                    "count": data["count"],
+                    "count": data["count"]
                 }
 
                 await manager.broadcast(product)

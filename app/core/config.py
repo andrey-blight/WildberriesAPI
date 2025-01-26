@@ -15,6 +15,7 @@ class Settings:
     SECRET_KEY = os.environ.get("SECRET_KEY")
     ALGORITHM = os.environ.get("ALGORITHM")
     API_USERNAME = os.environ.get("API_USERNAME")
+    WEB_SOCKET = os.environ.get("WEB_SOCKET")
 
 
 settings = Settings()
